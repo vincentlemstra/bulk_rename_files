@@ -73,7 +73,7 @@ class Window(QWidget, Ui_Window):
 
     def _runRenamerThread(self):
         prefix = self.prefixEdit.text()  # receives prefix text
-        self._thread = QThread()  # new QThread obeject to offload the file naming process
+        self._thread = QThread()  # new QThread object to offload the file naming process
         # turns ._files into a tuple to prevent the thread from modifying the underlying deque on the main thread
         self._renamer = Renamer(
             files=tuple(self._files),
@@ -85,6 +85,8 @@ class Window(QWidget, Ui_Window):
         # connects the thread’s .started() signal with .renameFiles() on the Renamer instance
         self._renamer.renamedFile.connect(
             self._updateStateWhenFileRenamed)  # update state
+        # connects the Renamer instance .progressed() signal with ._updateProgressBar().
+        self._renamer.progressed.connect(self._updateProgressBar)
         self._renamer.finished.connect(self._thread.quit)  # clean up
         # schedule for later deletion
         self._renamer.finished.connect(self._renamer.deleteLater)
@@ -97,3 +99,9 @@ class Window(QWidget, Ui_Window):
         self._files.popleft()
         self.srcFileList.takeItem(0)
         self.dstFileList.addItem(str(newFile))
+
+    def _updateProgressBar(self, fileNumber):
+        # set remaining files in percent
+        progressPercent = int(fileNumber / self._filesCount * 100)
+        # updates .value property
+        self.progressBar.setValue(progressPercent)
