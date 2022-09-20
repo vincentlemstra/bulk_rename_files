@@ -6,8 +6,10 @@
 from collections import deque
 from pathlib import Path
 
+from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import QFileDialog, QWidget
 
+from .rename import Renamer
 from .ui.window import Ui_Window
 
 # specify different file filters as a string
@@ -36,8 +38,10 @@ class Window(QWidget, Ui_Window):
         self.setupUi(self)
 
     def _connectSignalsSlots(self):
-        # trigger .loadFiles() every time the user clicks the button.
+        # trigger .loadFiles() every time the user clicks the button
         self.loadFilesButton.clicked.connect(self.loadFiles)
+        # trigger .renameFiles() every time the user clicks the button
+        self.renameFilesButton.clicked.connect(self.renameFiles)
 
     def loadFiles(self):
         self.dstFileList.clear()  # clear the dst file list
@@ -63,3 +67,33 @@ class Window(QWidget, Ui_Window):
                 self._files.append(Path(file))  # add to _files
                 self.srcFileList.addItem(file)  # add to GUI
             self._filesCount = len(self._files)  # update file count
+
+    def renameFiles(self):
+        self._runRenamerThread()
+
+    def _runRenamerThread(self):
+        prefix = self.prefixEdit.text()  # receives prefix text
+        self._thread = QThread()  # new QThread obeject to offload the file naming process
+        # turns ._files into a tuple to prevent the thread from modifying the underlying deque on the main thread
+        self._renamer = Renamer(
+            files=tuple(self._files),
+            prefix=prefix,
+        )
+        # moves object to different thread
+        self._renamer.moveToThread(self._thread)
+        self._thread.started.connect(self._renamer.renameFiles)  # rename
+        # connects the thread’s .started() signal with .renameFiles() on the Renamer instance
+        self._renamer.renamedFile.connect(
+            self._updateStateWhenFileRenamed)  # update state
+        self._renamer.finished.connect(self._thread.quit)  # clean up
+        # schedule for later deletion
+        self._renamer.finished.connect(self._renamer.deleteLater)
+        # makes it possible to delete thread after finishing
+        self._thread.finished.connect(self._thread.deleteLater)
+        self._thread.start()  # starts the working thread
+
+    # removes the file from the list of files to be renamed and updates GUI
+    def _updateStateWhenFileRenamed(self, newFile):
+        self._files.popleft()
+        self.srcFileList.takeItem(0)
+        self.dstFileList.addItem(str(newFile))
