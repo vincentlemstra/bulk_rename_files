@@ -2,6 +2,7 @@
 
 ## General info
 
+
 ## Technologies
 - Python
 - Qt Designer 

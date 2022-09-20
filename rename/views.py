@@ -20,7 +20,13 @@ FILTERS = ";;".join(
         "JPG Files (*.jpg)",
         "GIF Files (*.gif)",
         "Text Files (*.txt)",
-        "Python Files (*.py)",
+        "Microsoft Word Files (*.docx)",
+        "Microsoft Excel Files (*.xlsx)",
+        "Revit Project Files (*.rvt)",
+        "Revit Family Files (*.rfa)",
+        "CAD Files (*.dwg)",
+        "CAD Files (*.dwf)",
+        "CAD Files (*.dxf)",
     )
 )
 
