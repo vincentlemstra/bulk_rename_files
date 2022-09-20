@@ -3,6 +3,8 @@
 # Technologies
 - Python
 - Qt Designer 
-<!-- - Qt Thread -->
-- PyQt
+
+# Used or Learned Skills
+- Qt Designer
+- Using a Designer UI File in the Application
 
