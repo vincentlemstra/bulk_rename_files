@@ -52,6 +52,16 @@ class Window(QWidget, Ui_Window):
         self.loadFilesButton.clicked.connect(self.loadFiles)
         # trigger .renameFiles() every time the user clicks the button
         self.renameFilesButton.clicked.connect(self.renameFiles)
+        # connect Filename Prefix line edits .textChanged() signal with ._updateStateWhenReady()
+        self.prefixEdit.textChanged.connect(self._updateStateWhenReady)
+
+    def _updateStateWhenReady(self):
+        if self.prefixEdit.text():
+            # content: enable rename button
+            self.renameFilesButton.setEnabled(True)
+        else:
+            # no content: disable rename button
+            self.renameFilesButton.setEnabled(False)
 
     def loadFiles(self):
         self.dstFileList.clear()  # clear the dst file list
@@ -77,11 +87,11 @@ class Window(QWidget, Ui_Window):
                 self._files.append(Path(file))  # add to _files
                 self.srcFileList.addItem(file)  # add to GUI
             self._filesCount = len(self._files)  # update file count
-            self._updateStateWhenFilesLoaded() # calls GUI state
+            self._updateStateWhenFilesLoaded()  # calls GUI state
 
     def _updateStateWhenFilesLoaded(self):
-        self.prefixEdit.setEnabled(True) # enables typing field
-        self.prefixEdit.setFocus(True) # moves focus to edit field
+        self.prefixEdit.setEnabled(True)  # enables typing field
+        self.prefixEdit.setFocus(True)  # moves focus to edit field
 
     def renameFiles(self):
         self._runRenamerThread()
