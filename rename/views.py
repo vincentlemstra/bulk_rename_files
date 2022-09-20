@@ -36,6 +36,16 @@ class Window(QWidget, Ui_Window):
     def _setupUI(self):
         # collects code required for generating and setting up the GUI
         self.setupUi(self)
+        # update GUI state if no files are uploaded
+        self._updateStateWhenNoFiles()
+
+    def _updateStateWhenNoFiles(self):
+        self._filesCount = len(self._files)
+        self.loadFilesButton.setEnabled(True)  # enable load
+        self.loadFilesButton.setFocus(True)  # can use space
+        self.renameFilesButton.setEnabled(False)  # disable rename
+        self.prefixEdit.clear()  # clears filename prefix
+        self.prefixEdit.setEnabled(False)  # disable the typing field
 
     def _connectSignalsSlots(self):
         # trigger .loadFiles() every time the user clicks the button
@@ -86,7 +96,10 @@ class Window(QWidget, Ui_Window):
         self._renamer.renamedFile.connect(
             self._updateStateWhenFileRenamed)  # update state
         # connects the Renamer instance .progressed() signal with ._updateProgressBar().
-        self._renamer.progressed.connect(self._updateProgressBar)
+        self._renamer.progressed.connect(
+            self._updateProgressBar)  # update progress bar
+        # update when no files are selected
+        self._renamer.finished.connect(self._updateStateWhenNoFiles)
         self._renamer.finished.connect(self._thread.quit)  # clean up
         # schedule for later deletion
         self._renamer.finished.connect(self._renamer.deleteLater)
