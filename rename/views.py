@@ -77,6 +77,11 @@ class Window(QWidget, Ui_Window):
                 self._files.append(Path(file))  # add to _files
                 self.srcFileList.addItem(file)  # add to GUI
             self._filesCount = len(self._files)  # update file count
+            self._updateStateWhenFilesLoaded() # calls GUI state
+
+    def _updateStateWhenFilesLoaded(self):
+        self.prefixEdit.setEnabled(True) # enables typing field
+        self.prefixEdit.setFocus(True) # moves focus to edit field
 
     def renameFiles(self):
         self._runRenamerThread()
