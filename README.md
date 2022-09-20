@@ -12,7 +12,7 @@
 ## General Information
 - This app will automate the process of renaming multiple files in a given directory in your file system. 
 - The app is set to add a user input before the original file name. This can be changed in rename.py (see comments).
-- Used to maintain a content library.
+- I used this maintain a content library: meeting and updating the file naming requirements of 200+ files.
 
 
 ## Technologies Used
