@@ -95,6 +95,12 @@ class Window(QWidget, Ui_Window):
 
     def renameFiles(self):
         self._runRenamerThread()
+        self._updateStateWhileRenaming()
+
+    def _updateStateWhileRenaming(self):
+        # disables buttons while the renaming process is running
+        self.loadFilesButton.setEnabled(False)
+        self.renameFilesButton.setEnabled(False)
 
     def _runRenamerThread(self):
         prefix = self.prefixEdit.text()  # receives prefix text
