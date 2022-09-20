@@ -1,10 +1,23 @@
 # Bulk Rename Files
 
-## General info
+## Table of Contents
+* [General Info](#general-information)
+* [Technologies Used](#technologies-used)
+* [Used or Learned skills](#used-or-learned-skills)
+* [Screenshots](#screenshots)
+* [Project Status](#project-status)
+* [Room for Improvement](#room-for-improvement)
+* [Acknowledgement](#acknowledgement)
+
+## General Information
+- This app will automate the process of renaming multiple files in a given directory in your file system. 
+- The app is set to add a user input before the original file name. This can be changed in rename.py (see comments).
+- Used to maintain a content library.
 
 
-## Technologies
+## Technologies Used
 - Python
+- PyQt5 - Version 5.15.7
 - Qt Designer 
 
 ## Used or Learned Skills
@@ -12,5 +25,17 @@
 - Use PyQt threads to offload the bulk file renaming process
 - Manage system paths and rename files with pathlib
 
+## Screenshots
+
+## Project Status
+Project is: completed.
+
+## Room for Improvement
+- There could be more buttons to choose how you want to save the file. For example: you want it to be saved with a date + time instead of the 1..2..3.
+
 ## Acknowledgement
-- Thanks to [RealPython](https://realpython.com/bulk-file-rename-tool-python/#step-2-create-the-pyqt-skeleton-application) for laying out the project.
+- Thanks to [RealPython](https://realpython.com/bulk-file-rename-tool-python/#step-2-create-the-pyqt-skeleton-application) for laying out the basis of the project.
+
+
+
+
