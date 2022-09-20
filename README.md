@@ -26,6 +26,7 @@
 - Manage system paths and rename files with pathlib
 
 ## Screenshots
+![bulk_rename_files_1](https://user-images.githubusercontent.com/22345585/191315966-6138a0e8-7a8d-47d5-9363-37a288f75243.gif)
 
 ## Project Status
 Project is: completed.
